@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Événements Tactiles</title>
+    <style>
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+      }
+      canvas {
+        border: 1px solid black;
+        display: block;
+      }
+      #info {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 10px;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="info">Infos Tactiles :</div>
+    <canvas id="canvas"></canvas>
+
+    <script>
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+      const info = document.getElementById("info");
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      let dessin = false;
+
+      function mettreAJourInfo(typeEvent, touches) {
+        const touch = touches[0];
+        info.textContent = `Infos Tactiles : ${typeEvent} à (${touch.clientX}, ${touch.clientY})`;
+      }
+
+      canvas.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        dessin = true;
+        const touch = e.touches[0];
+        ctx.beginPath();
+        ctx.moveTo(touch.clientX, touch.clientY);
+        mettreAJourInfo("touchstart", e.touches);
+      });
+
+      canvas.addEventListener("touchmove", (e) => {
+        e.preventDefault();
+        if (!dessin) return;
+        const touch = e.touches[0];
+        ctx.lineTo(touch.clientX, touch.clientY);
+        ctx.stroke();
+        mettreAJourInfo("touchmove", e.touches);
+      });
+
+      canvas.addEventListener("touchend", (e) => {
+        e.preventDefault();
+        dessin = false;
+        mettreAJourInfo("touchend", e.changedTouches);
+      });
+
+      canvas.addEventListener("touchcancel", (e) => {
+        e.preventDefault();
+        dessin = false;
+        mettreAJourInfo("touchcancel", e.changedTouches);
+      });
+    </script>
+  </body>
+</html>

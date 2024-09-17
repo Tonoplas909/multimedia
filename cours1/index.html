@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Ma Position GPS</title>
+  </head>
 
-    <head>
-        <title>Ma Position GPS</title>
-    </head>
-
-    <body>
-        <div id="resultat"></div>
-        <script>
-        // Fonction pour afficher les résultats
-        function afficherPosition(position) {
-            const resultatDiv = document.getElementById('resultat');
-            resultatDiv.innerHTML = `
+  <body>
+    <div id="resultat"></div>
+    <script>
+      function afficherPosition(position) {
+        const resultatDiv = document.getElementById("resultat");
+        resultatDiv.innerHTML = `
                 <p>Latitude : ${position.coords.latitude}</p>
                 <p>Longitude : ${position.coords.longitude}</p>
                 <p>Altitude : ${position.coords.altitude} mètres</p>
@@ -19,14 +17,16 @@
                 <p>Vitesse : ${position.coords.speed} m/s</p>
                 <p>Date : ${new Date(position.timestamp)}</p>
             `;
-        }
+      }
 
-        // Récupération de la position une fois
-        navigator.geolocation.getCurrentPosition(afficherPosition);
+      navigator.geolocation.getCurrentPosition(afficherPosition);
 
-        // Suivi de la position en temps réel (ajuster l'intervalle si besoin)
-        navigator.geolocation.watchPosition(afficherPosition, null, { timeout: 10000, maximumAge: 0 });
+      navigator.geolocation.watchPosition(afficherPosition, null, {
+        timeout: 10000,
+        maximumAge: 0,
+      });
     </script>
-    </body>
 
+    <a href="exo3.html">Accéder à l'éxercice suivant</a>
+  </body>
 </html>

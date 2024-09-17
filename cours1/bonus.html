@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Geolocation and Device Motion</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+    <style>
+      #map {
+        height: 300px;
+        width: 100%;
+      }
+      #canvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Geolocation and Device Motion</h1>
+    <div id="map"></div>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+      function initMap() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+          alert("La géolocalisation n'existe pas sur ce navigateur.");
+        }
+      }
+
+      function showPosition(position) {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const map = L.map("map").setView([lat, lng], 15);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(map);
+
+        L.marker([lat, lng]).addTo(map);
+      }
+
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+      let drawing = false;
+
+      canvas.addEventListener("touchstart", function (event) {
+        drawing = true;
+        const touch = event.touches[0];
+        ctx.beginPath();
+        ctx.moveTo(
+          touch.clientX - canvas.offsetLeft,
+          touch.clientY - canvas.offsetTop
+        );
+      });
+
+      canvas.addEventListener("touchmove", function (event) {
+        if (drawing) {
+          const touch = event.touches[0];
+          ctx.lineTo(
+            touch.clientX - canvas.offsetLeft,
+            touch.clientY - canvas.offsetTop
+          );
+          ctx.stroke();
+        }
+      });
+
+      canvas.addEventListener("touchend", function () {
+        drawing = false;
+      });
+
+      initMap();
+    </script>
+  </body>
+</html>

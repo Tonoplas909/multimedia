@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Orientation et Mouvement du Smartphone</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      .data {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Orientation et Mouvement du Smartphone</h1>
+    <div class="data">
+      <h2>Orientation</h2>
+      <p>Alpha : <span id="alpha">0</span></p>
+      <p>Bêta : <span id="beta">0</span></p>
+      <p>Gamma : <span id="gamma">0</span></p>
+    </div>
+    <div class="data">
+      <h2>Mouvement</h2>
+      <p>Accel X : <span id="accelX">0</span></p>
+      <p>Accel Y : <span id="accelY">0</span></p>
+      <p>Accel Z : <span id="accelZ">0</span></p>
+      <p>Rota Alpha : <span id="rotAlpha">0</span></p>
+      <p>Rota Bêta : <span id="rotBeta">0</span></p>
+      <p>Rota Gamma : <span id="rotGamma">0</span></p>
+    </div>
+
+    <script>
+      if (window.DeviceOrientationEvent) {
+        window.addEventListener("deviceorientation", function (event) {
+          document.getElementById("alpha").textContent = event.alpha.toFixed(2);
+          document.getElementById("beta").textContent = event.beta.toFixed(2);
+          document.getElementById("gamma").textContent = event.gamma.toFixed(2);
+        });
+      } else {
+        alert(
+          "L'orientation de l'appareil n'est pas possible sur votre smartphone."
+        );
+      }
+
+      if (window.DeviceMotionEvent) {
+        window.addEventListener("devicemotion", function (event) {
+          document.getElementById("accelX").textContent =
+            event.acceleration.x.toFixed(2);
+          document.getElementById("accelY").textContent =
+            event.acceleration.y.toFixed(2);
+          document.getElementById("accelZ").textContent =
+            event.acceleration.z.toFixed(2);
+          document.getElementById("rotAlpha").textContent =
+            event.rotationRate.alpha.toFixed(2);
+          document.getElementById("rotBeta").textContent =
+            event.rotationRate.beta.toFixed(2);
+          document.getElementById("rotGamma").textContent =
+            event.rotationRate.gamma.toFixed(2);
+        });
+      } else {
+        alert(
+          "Le mouvement de l'appareil n'est pas pris en charge sur votre appareil."
+        );
+      }
+    </script>
+    <a href="exo4.html">Accéder à l'exercice suivant</a>
+    <br />
+    <a href="bonus.html">Accéder à la page bonus</a>
+  </body>
+</html>
