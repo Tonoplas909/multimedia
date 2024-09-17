@@ -1,32 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
   <head>
-    <title>Ma Position GPS</title>
-  </head>
-
-  <body>
-    <div id="resultat"></div>
-    <script>
-      function afficherPosition(position) {
-        const resultatDiv = document.getElementById("resultat");
-        resultatDiv.innerHTML = `
-                <p>Latitude : ${position.coords.latitude}</p>
-                <p>Longitude : ${position.coords.longitude}</p>
-                <p>Altitude : ${position.coords.altitude} mètres</p>
-                <p>Précision : ${position.coords.accuracy} mètres</p>
-                <p>Vitesse : ${position.coords.speed} m/s</p>
-                <p>Date : ${new Date(position.timestamp)}</p>
-            `;
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Div centrée</title>
+    <style>
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f0f0f0;
       }
-
-      navigator.geolocation.getCurrentPosition(afficherPosition);
-
-      navigator.geolocation.watchPosition(afficherPosition, null, {
-        timeout: 10000,
-        maximumAge: 0,
-      });
-    </script>
-
-    <a href="exo3.html">Accéder à l'éxercice suivant</a>
+      .centered-div {
+        background-color: white;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        text-align: center;
+        border-radius: 15px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 21.44px;
+      }
+      button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        transition: background-color 0.3s;
+      }
+      button:hover {
+        transition: cubic-bezier(0.215, 0.61, 0.355, 1) 1s;
+        scale: 1.2;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="centered-div">
+      <h1 style="width: 100%">Exercices</h1>
+      <div class="grid">
+        <button onclick="location.href='exo2.html'">Exercice 1</button>
+        <button onclick="location.href='exo3.html'">Exercice 2</button>
+        <button onclick="location.href='exo4.html'">Exercice 3</button>
+        <button onclick="location.href='bonus.html'">Bonus</button>
+      </div>
+    </div>
   </body>
 </html>

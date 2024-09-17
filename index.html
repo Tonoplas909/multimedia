@@ -1,36 +1,94 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Index des sous-dossiers</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            margin: 10px 0;
-        }
-        a {
-            text-decoration: none;
-            color: #007BFF;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .container {
+        background: #fff;
+        padding: 20px 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      h1 {
+        color: #007bff;
+        margin-bottom: 20px;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li {
+        margin: 15px 0;
+      }
+      a {
+        text-decoration: none;
+        color: #007bff;
+        font-size: 18px;
+        transition: color 0.3s;
+      }
+      a:hover {
+        color: #0056b3;
+        text-decoration: underline;
+      }
+      .link-button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        transition: background-color 0.3s;
+      }
+      .link-button:hover {
+        transition: cubic-bezier(0.215, 0.61, 0.355, 1) 1s;
+        scale: 1.2;
+      }
     </style>
-</head>
-<body>
-    <h1>Index des sous-dossiers</h1>
-    <ul>
-        <li><a href="cours1/index.html">Cours1</a></li>
-        <li><a href="sous-dossier2/index.html">Sous-dossier 2</a></li>
-        <li><a href="sous-dossier3/index.html">Sous-dossier 3</a></li>
-    </ul>
-</body>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Index des sous-dossiers</h1>
+      <ul>
+        <li>
+          <button
+            class="link-button"
+            onclick="window.location.href='cours1/index.html'"
+          >
+            Cours1
+          </button>
+        </li>
+        <li>
+          <button
+            class="link-button"
+            onclick="window.location.href='cours2/index.html'"
+          >
+            Cours2
+          </button>
+        </li>
+        <li>
+          <button
+            class="link-button"
+            onclick="window.location.href='cours3/index.html'"
+          >
+            Cours3
+          </button>
+        </li>
+      </ul>
+    </div>
+  </body>
 </html>
