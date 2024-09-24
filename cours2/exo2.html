@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Leaflet Exercise</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+      #map {
+        height: 600px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-geometryutil"></script>
+    <script>
+      var map = L.map("map").setView([25.774, -80.19], 5);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          'Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+      var bermudaTriangle = [
+        [25.774, -80.19],
+        [18.466, -66.118],
+        [32.321, -64.757],
+      ];
+      L.polygon(bermudaTriangle, { color: "red" }).addTo(map);
+      var marseille = [43.296482, 5.36978];
+      var nice = [43.710173, 7.261953];
+      L.polyline([marseille, nice], { color: "blue" }).addTo(map);
+      map.locate({ setView: true, maxZoom: 10 });
+
+      function onLocationFound(e) {
+        var radius = e.accuracy / 2;
+        L.circle(e.latlng, radius).addTo(map);
+        var distance = L.GeometryUtil.distance(map, marseille, e.latlng);
+        L.popup()
+          .setLatLng(e.latlng)
+          .setContent(
+            "You are " + (distance / 1000).toFixed(2) + " km from Marseille"
+          )
+          .openOn(map);
+      }
+
+      map.on("locationfound", onLocationFound);
+
+      function onLocationError(e) {
+        alert(e.message);
+      }
+
+      map.on("locationerror", onLocationError);
+    </script>
+  </body>
+</html>
