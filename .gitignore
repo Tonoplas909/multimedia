@@ -5,6 +5,7 @@
 *.log
 
 # Ignore build directories
+dist/
 build/
 
 # Ignore environment variables
