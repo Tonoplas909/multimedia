@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>BabylonJS Earth</title>
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  </head>
+  <body>
+    <canvas id="renderCanvas" style="width: 100%; height: 100%"></canvas>
+    <script type="module">
+      const canvas = document.getElementById("renderCanvas");
+      const engine = new BABYLON.Engine(canvas, true);
+
+      const createScene = function () {
+        const scene = new BABYLON.Scene(engine);
+        const camera = new BABYLON.ArcRotateCamera(
+          "camera",
+          Math.PI / 2,
+          Math.PI / 2,
+          3.5,
+          BABYLON.Vector3.Zero(),
+          scene
+        );
+        camera.attachControl(canvas, true);
+
+        const light = new BABYLON.HemisphericLight(
+          "light",
+          new BABYLON.Vector3(0, 1, 1),
+          scene
+        );
+
+        const light2 = new BABYLON.HemisphericLight(
+          "light",
+          new BABYLON.Vector3(0, -1, -1),
+          scene
+        );
+
+        const earth = BABYLON.MeshBuilder.CreateSphere(
+          "earth",
+          { diameter: 2 },
+          scene
+        );
+
+        const earthMaterial = new BABYLON.StandardMaterial(
+          "earthMaterial",
+          scene
+        );
+        earthMaterial.diffuseTexture = new BABYLON.Texture(
+          "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/a0bebea3-9ff6-49c3-895a-452cc5c9da63/dg3wwrg-880d1079-b478-4a1e-b512-af9c43a74537.png/v1/fill/w_1264,h_632,q_70,strp/earth_texture_map_with_clouds___1k___by_colourness_dg3wwrg-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NjQwIiwicGF0aCI6IlwvZlwvYTBiZWJlYTMtOWZmNi00OWMzLTg5NWEtNDUyY2M1YzlkYTYzXC9kZzN3d3JnLTg4MGQxMDc5LWI0NzgtNGExZS1iNTEyLWFmOWM0M2E3NDUzNy5wbmciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.rxWxwvu5DAUA0fpdlPUQqO6GdgpwM265qY9hUCuNy4Y",
+          scene
+        );
+
+        earthMaterial.diffuseTexture.vScale = -1;
+        earth.scaling = new BABYLON.Vector3(-1, 1, 1);
+        earth.material = earthMaterial;
+
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function (position) {
+            const latitude = position.coords.latitude;
+            const longitude = -position.coords.longitude;
+            const radius = 1;
+
+            const userPosition = latLonToCartesian(latitude, longitude, radius);
+
+            const userMarker = BABYLON.MeshBuilder.CreateSphere(
+              "userMarker",
+              { diameter: 0.015 },
+              scene
+            );
+            userMarker.position = userPosition;
+
+            const userMaterial = new BABYLON.StandardMaterial(
+              "userMaterial",
+              scene
+            );
+            userMaterial.diffuseColor = new BABYLON.Color3(1, 0, 0);
+            userMarker.material = userMaterial;
+          });
+        } else {
+          console.log("Geolocation is not supported by this browser.");
+        }
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "https://restcountries.com/v3.1/all", true);
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            const countries = JSON.parse(xhr.responseText);
+            countries.forEach((country) => {
+              if (country.latlng) {
+                const latitude = country.latlng[0];
+                const longitude = -country.latlng[1];
+                const radius = 1;
+
+                const countryPosition = latLonToCartesian(
+                  latitude,
+                  longitude,
+                  radius
+                );
+
+                const countryMarker = BABYLON.MeshBuilder.CreateSphere(
+                  "countryMarker",
+                  { diameter: 0.015 },
+                  scene
+                );
+                countryMarker.position = countryPosition;
+
+                const countryMaterial = new BABYLON.StandardMaterial(
+                  "countryMaterial",
+                  scene
+                );
+                countryMaterial.diffuseColor = new BABYLON.Color3(0, 1, 0);
+                countryMarker.material = countryMaterial;
+              }
+            });
+          }
+        };
+        xhr.send();
+
+        return scene;
+      };
+
+      function latLonToCartesian(lat, lon, radius) {
+        const phi = (90 - lat) * (Math.PI / 180);
+        const theta = (lon + 180) * (Math.PI / 180);
+
+        const x = -(radius * Math.sin(phi) * Math.cos(theta));
+        const z = radius * Math.sin(phi) * Math.sin(theta);
+        const y = radius * Math.cos(phi);
+
+        return new BABYLON.Vector3(x, y, z);
+      }
+
+      const scene = createScene();
+
+      engine.runRenderLoop(function () {
+        scene.render();
+      });
+
+      window.addEventListener("resize", function () {
+        engine.resize();
+      });
+    </script>
+  </body>
+</html>
